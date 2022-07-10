@@ -1,0 +1,19 @@
+[package]
+name = "file-collector"
+version = "0.1.0"
+authors = ["Harsh Shandilya <me@msfjarvis.dev>"]
+edition = "2021"
+description = "CLI tool to collect files from multiple directories into a single target"
+repository = "https://github.com/msfjarvis/file-collector"
+homepage = "https://github.com/msfjarvis/file-collector"
+license = "MIT/Apache-2.0"
+keywords = []
+readme = "README.md"
+include = ["src/**/*", "LICENSE-*", "README.md"]
+
+[dependencies]
+anyhow = "1.0.58"
+serde = "1.0.138"
+serde_derive = "1.0.138"
+tokio = { version = "1.19.2", features = ["tokio-macros"] }
+watchman_client = "0.8.0"
