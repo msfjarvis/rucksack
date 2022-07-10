@@ -14,5 +14,8 @@ build type="":
 run type="":
     cargo run {{ type }}
 
+test:
+    cargo nextest run
+
 version:
     @echo {{ version }}

@@ -16,4 +16,8 @@ anyhow = "1.0.58"
 serde = "1.0.138"
 serde_derive = "1.0.138"
 tokio = { version = "1.19.2", features = ["tokio-macros"] }
+toml = "0.5.9"
 watchman_client = "0.8.0"
+
+[dev-dependencies]
+assay = "0.1.1"
