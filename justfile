@@ -1,4 +1,5 @@
 alias b := build
+alias c := check
 alias r := run
 alias v := version
 
@@ -10,6 +11,9 @@ set dotenv-load := true
 
 build type="":
     cargo build {{ type }}
+
+check type="":
+    cargo check {{ type }}
 
 run type="":
     cargo run {{ type }}

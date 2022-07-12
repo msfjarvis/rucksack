@@ -1,17 +1,10 @@
 mod config;
+mod watch;
 
+use crate::config::{get_path, RootConfig};
+use crate::watch::generate_subscriptions;
 use anyhow::Result;
-use serde::Deserialize;
-use std::path::PathBuf;
 use watchman_client::{prelude::*, SubscriptionData};
-
-query_result_type! {
-    struct NameAndType {
-        name: NameField,
-        file_type: FileTypeField,
-        exists: ExistsField,
-    }
-}
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
@@ -24,21 +17,29 @@ async fn main() -> Result<()> {
 }
 
 async fn run() -> Result<()> {
-    let path = PathBuf::from(".");
-    let client = Connector::new().connect().await?;
-    let resolved = client
-        .resolve_root(CanonicalPath::canonicalize(path)?)
-        .await?;
+    let config_path = get_path()?;
+    let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
+    let config: RootConfig<'_> = toml::from_str(&config_str)?;
 
-    let (mut sub, _) = client
-        .subscribe::<NameAndType>(&resolved, SubscribeRequest::default())
-        .await?;
+    let client = Connector::new().connect().await?;
+    let mut subs = vec![];
+    for bucket in config.buckets.iter() {
+        subs.extend(generate_subscriptions(&client, bucket).await?);
+    }
 
     loop {
-        let item = sub.next().await?;
-        match item {
-            SubscriptionData::FilesChanged(_) => {}
-            _ => println!("{:#?}", item),
-        };
+        for sub in subs.iter_mut() {
+            let item = sub.next().await?;
+            match item {
+                SubscriptionData::FilesChanged(event) => {
+                    if let Some(files) = event.files {
+                        for file in files.iter() {
+                            println!("{:#?}", file);
+                        }
+                    }
+                }
+                _ => println!("{:#?}", item),
+            };
+        }
     }
 }
