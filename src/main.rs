@@ -4,13 +4,18 @@ mod watch;
 use crate::config::{get_path, RootConfig};
 use crate::watch::generate_subscriptions;
 use anyhow::Result;
+use tracing::metadata::LevelFilter;
+use tracing::{error, info, trace};
 use watchman_client::{prelude::*, SubscriptionData};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
+    tracing_subscriber::fmt()
+        .pretty()
+        .with_max_level(LevelFilter::DEBUG)
+        .init();
     if let Err(err) = run().await {
-        // Print a prettier error than the default
-        eprintln!("{}", err);
+        error!(?err);
         std::process::exit(1);
     }
     Ok(())
@@ -34,11 +39,11 @@ async fn run() -> Result<()> {
                 SubscriptionData::FilesChanged(event) => {
                     if let Some(files) = event.files {
                         for file in files.iter() {
-                            println!("{:#?}", file);
+                            info!(?file);
                         }
                     }
                 }
-                _ => println!("{:#?}", item),
+                _ => trace!(?item),
             };
         }
     }

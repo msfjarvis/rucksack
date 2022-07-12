@@ -1,5 +1,6 @@
 use anyhow::Result;
 use serde::Deserialize;
+use tracing::trace;
 use watchman_client::{prelude::*, Subscription};
 
 use crate::config::Bucket;
@@ -17,7 +18,7 @@ pub async fn generate_subscriptions<'a>(
     bucket: &'a Bucket<'_>,
 ) -> Result<Vec<Subscription<NameAndType>>> {
     if let Some(name) = bucket.name {
-        println!("Generating Watchman subscription for {}", name);
+        trace!("Generating Watchman subscription for {}", name);
     }
     let mut subs = vec![];
     for path in &bucket.sources {

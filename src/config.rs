@@ -1,6 +1,7 @@
 use anyhow::{anyhow, Result};
 use serde_derive::Deserialize;
 use std::path::PathBuf;
+use tracing::trace;
 
 #[derive(Debug, Deserialize)]
 pub struct RootConfig<'bucket> {
@@ -20,7 +21,7 @@ pub fn get_path() -> Result<PathBuf> {
     config_path.push("collector");
     config_path.push("config");
     config_path.set_extension("toml");
-    println!("Config file: {}", config_path.to_string_lossy());
+    trace!("Config file: {}", config_path.to_string_lossy());
     Ok(config_path)
 }
 
