@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use serde::Deserialize;
 use tracing::trace;
 use watchman_client::{prelude::*, Subscription};
@@ -23,7 +23,7 @@ pub async fn generate_subscriptions<'a>(
     let mut subs = vec![];
     for path in &bucket.sources {
         let resolved = client
-            .resolve_root(CanonicalPath::canonicalize(path)?)
+            .resolve_root(CanonicalPath::canonicalize(path).context(format!("{}", path.display()))?)
             .await?;
         let (sub, _) = client
             .subscribe::<NameAndType>(&resolved, SubscribeRequest::default())
