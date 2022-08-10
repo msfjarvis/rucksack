@@ -10,6 +10,7 @@ query_result_type! {
         pub name: NameField,
         pub file_type: FileTypeField,
         pub exists: ExistsField,
+        pub size: SizeField,
     }
 }
 

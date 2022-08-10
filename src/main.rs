@@ -3,10 +3,10 @@ mod watch;
 
 use crate::config::{get_path, RootConfig};
 use crate::watch::generate_subscriptions;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use futures::future::select_all;
 use tracing::metadata::LevelFilter;
-use tracing::{error, info, trace};
+use tracing::{debug, error, trace};
 use watchman_client::{prelude::*, SubscriptionData};
 
 #[tokio::main(flavor = "current_thread")]
@@ -41,8 +41,20 @@ async fn run() -> Result<()> {
             SubscriptionData::FilesChanged(event) => {
                 if let Some(files) = event.files {
                     for file in files.iter() {
-                        let f = &config.bucket.sources[index];
-                        info!(?f, ?file);
+                        debug!(?file);
+                        if *file.exists && *file.size > 0 {
+                            let mut source = config.bucket.sources[index].clone();
+                            let mut target = config.bucket.target.clone();
+                            source.push(file.name.as_os_str());
+                            target.push(file.name.as_os_str());
+                            std::fs::copy(source.clone(), target.clone()).context(format!(
+                                "src={}, dest={}",
+                                source.clone().display(),
+                                target.clone().display()
+                            ))?;
+                            std::fs::remove_file(source.clone())
+                                .context(format!("{}", source.clone().display()))?;
+                        }
                     }
                 }
             }
