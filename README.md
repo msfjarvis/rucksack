@@ -21,7 +21,7 @@ sources = [
 target = "/mnt/mediahell/screenshots"
 ```
 
-## Running
+### Running
 
 Clone this repository and run `cargo run --release`. You will require a Rust installation.
 
