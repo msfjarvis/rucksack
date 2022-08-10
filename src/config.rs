@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use tracing::trace;
 
 #[derive(Debug, Deserialize)]
-pub struct RootConfig<'bucket> {
+pub struct Root<'bucket> {
     #[serde(borrow)]
     pub bucket: Bucket<'bucket>,
 }
@@ -32,7 +32,7 @@ mod test {
     use assay::assay;
     use toml::from_str;
 
-    use super::RootConfig;
+    use super::Root;
 
     #[assay]
     fn parse() {
@@ -44,7 +44,7 @@ mod test {
         ]
         target = "/home/test/screenshots"
         "#;
-        let config: RootConfig<'_> = from_str(config)?;
+        let config: Root<'_> = from_str(config)?;
         let bucket = &config.bucket;
         assert_eq!(Some("Screenshots"), bucket.name);
         assert_eq!(

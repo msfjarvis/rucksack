@@ -1,7 +1,7 @@
 mod config;
 mod watch;
 
-use crate::config::{get_path, RootConfig};
+use crate::config::{get_path, Root};
 use crate::watch::generate_subscriptions;
 use anyhow::{Context, Result};
 use futures::future::select_all;
@@ -25,7 +25,7 @@ async fn main() -> Result<()> {
 async fn run() -> Result<()> {
     let config_path = get_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
-    let config: RootConfig<'_> = toml::from_str(&config_str)?;
+    let config: Root<'_> = toml::from_str(&config_str)?;
 
     let client = Connector::new().connect().await?;
     let mut subs = generate_subscriptions(&client, &config.bucket).await?;
@@ -37,28 +37,27 @@ async fn run() -> Result<()> {
             .collect::<Vec<_>>();
         let (resolved, index, _) = select_all(subscription_futures).await;
         let resolved = resolved?;
-        match resolved {
-            SubscriptionData::FilesChanged(event) => {
-                if let Some(files) = event.files {
-                    for file in files.iter() {
-                        debug!(?file);
-                        if *file.exists && *file.size > 0 {
-                            let mut source = config.bucket.sources[index].clone();
-                            let mut target = config.bucket.target.clone();
-                            source.push(file.name.as_os_str());
-                            target.push(file.name.as_os_str());
-                            std::fs::copy(source.clone(), target.clone()).context(format!(
-                                "src={}, dest={}",
-                                source.clone().display(),
-                                target.clone().display()
-                            ))?;
-                            std::fs::remove_file(source.clone())
-                                .context(format!("{}", source.clone().display()))?;
-                        }
+        if let SubscriptionData::FilesChanged(event) = resolved {
+            if let Some(files) = event.files {
+                for file in &files {
+                    debug!(?file);
+                    if *file.exists && *file.size > 0 {
+                        let mut source = config.bucket.sources[index].clone();
+                        let mut target = config.bucket.target.clone();
+                        source.push(file.name.as_os_str());
+                        target.push(file.name.as_os_str());
+                        std::fs::copy(source.clone(), target.clone()).context(format!(
+                            "src={}, dest={}",
+                            source.clone().display(),
+                            target.clone().display()
+                        ))?;
+                        std::fs::remove_file(source.clone())
+                            .context(format!("{}", source.clone().display()))?;
                     }
                 }
             }
-            _ => trace!(?resolved),
+        } else {
+            trace!(?resolved);
         };
     }
 }
