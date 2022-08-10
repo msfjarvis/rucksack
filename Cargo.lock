@@ -135,6 +135,7 @@ dependencies = [
  "anyhow",
  "assay",
  "dirs",
+ "futures 0.3.21",
  "serde",
  "serde_derive",
  "tokio",

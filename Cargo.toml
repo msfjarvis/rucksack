@@ -14,6 +14,7 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 [dependencies]
 anyhow = "1.0.58"
 dirs = "4.0.0"
+futures = "0.3.21"
 serde = "1.0.138"
 serde_derive = "1.0.138"
 tokio = { version = "1.19.2", features = ["tokio-macros"] }
