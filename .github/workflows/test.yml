@@ -1,0 +1,13 @@
+on:
+  push:
+    branches:
+      - main
+      - renovate/**
+  pull_request:
+    branches:
+      - main
+
+name: Check Rust code
+jobs:
+  check:
+    uses: msfjarvis/shared-workflows/.github/workflows/test-rust-project.yml@main
