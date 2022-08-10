@@ -28,10 +28,7 @@ async fn run() -> Result<()> {
     let config: RootConfig<'_> = toml::from_str(&config_str)?;
 
     let client = Connector::new().connect().await?;
-    let mut subs = vec![];
-    for bucket in config.buckets.iter() {
-        subs.extend(generate_subscriptions(&client, bucket).await?);
-    }
+    let mut subs = generate_subscriptions(&client, &config.bucket).await?;
 
     loop {
         let subscription_futures = subs
@@ -44,7 +41,8 @@ async fn run() -> Result<()> {
             SubscriptionData::FilesChanged(event) => {
                 if let Some(files) = event.files {
                     for file in files.iter() {
-                        info!(?file);
+                        let f = &config.bucket.sources[index];
+                        info!(?f, ?file);
                     }
                 }
             }
