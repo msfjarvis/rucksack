@@ -21,6 +21,7 @@ unlicensed = "deny"
 allow = [
     "MIT",
     "Apache-2.0",
+    "Unicode-DFS-2016",
 ]
 copyleft = "allow"
 allow-osi-fsf-free = "neither"
@@ -37,7 +38,7 @@ multiple-versions = "deny"
 wildcards = "deny"
 highlight = "all"
 skip = [
-    { name = "bytes", version = "1.1.0" },
+    { name = "bytes", version = "0.4.12" },
     { name = "futures", version = "0.3.21" }
 ]
 
