@@ -40,7 +40,6 @@ async fn run() -> Result<()> {
         if let SubscriptionData::FilesChanged(event) = resolved {
             if let Some(files) = event.files {
                 for file in &files {
-                    debug!(?file);
                     let name = file.name.as_path();
                     let exists = *file.exists;
                     let empty = *file.size == 0;
@@ -49,12 +48,14 @@ async fn run() -> Result<()> {
                         let source = source.as_path();
                         let target = config.bucket.target.join(name);
                         let target = target.as_path();
+                        debug!("Moving {} to {}", source.display(), target.display());
                         std::fs::copy(source, target).context(format!(
                             "src={}, dest={}",
                             source.display(),
                             target.display()
                         ))?;
                         std::fs::remove_file(source).context(format!("{}", source.display()))?;
+                        debug!("Successfully moved {} to {}", name.display(), target.display());
                     }
                 }
             }
