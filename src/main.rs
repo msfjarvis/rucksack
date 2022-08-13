@@ -41,18 +41,20 @@ async fn run() -> Result<()> {
             if let Some(files) = event.files {
                 for file in &files {
                     debug!(?file);
-                    if *file.exists && *file.size > 0 {
-                        let mut source = config.bucket.sources[index].clone();
-                        let mut target = config.bucket.target.clone();
-                        source.push(file.name.as_os_str());
-                        target.push(file.name.as_os_str());
-                        std::fs::copy(source.clone(), target.clone()).context(format!(
+                    let name = file.name.as_path();
+                    let exists = *file.exists;
+                    let empty = *file.size == 0;
+                    if exists && !empty {
+                        let source = config.bucket.sources[index].join(name);
+                        let source = source.as_path();
+                        let target = config.bucket.target.join(name);
+                        let target = target.as_path();
+                        std::fs::copy(source, target).context(format!(
                             "src={}, dest={}",
-                            source.clone().display(),
-                            target.clone().display()
+                            source.display(),
+                            target.display()
                         ))?;
-                        std::fs::remove_file(source.clone())
-                            .context(format!("{}", source.clone().display()))?;
+                        std::fs::remove_file(source).context(format!("{}", source.display()))?;
                     }
                 }
             }
