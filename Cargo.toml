@@ -1,6 +1,6 @@
 [package]
 name = "file-collector"
-version = "0.1.1-alpha.0"
+version = "0.1.1"
 authors = ["Harsh Shandilya <me@msfjarvis.dev>"]
 edition = "2021"
 description = "CLI tool to collect files from multiple directories into a single target"
