@@ -21,6 +21,7 @@ serde_derive = "1.0.138"
 tokio = { version = "1.19.2", features = ["tokio-macros"] }
 toml = "0.5.9"
 tracing = "0.1.35"
+tracing-journald = { version = "0.3.0", optional = true }
 tracing-subscriber = "0.3.14"
 watchman_client = "0.8.0"
 

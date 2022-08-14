@@ -1,20 +1,17 @@
 mod config;
+mod trace;
 mod watch;
 
 use crate::config::{get_path, Root};
 use crate::watch::generate_subscriptions;
 use anyhow::{Context, Result};
 use futures::future::select_all;
-use tracing::metadata::LevelFilter;
 use tracing::{debug, error, trace};
 use watchman_client::{prelude::*, SubscriptionData};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
-    tracing_subscriber::fmt()
-        .pretty()
-        .with_max_level(LevelFilter::DEBUG)
-        .init();
+    trace::init()?;
     if let Err(err) = run().await {
         error!(?err);
         std::process::exit(1);
