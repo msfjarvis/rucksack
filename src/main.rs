@@ -55,7 +55,11 @@ async fn run() -> Result<()> {
                             target.display()
                         ))?;
                         std::fs::remove_file(source).context(format!("{}", source.display()))?;
-                        debug!("Successfully moved {} to {}", name.display(), target.display());
+                        debug!(
+                            "Successfully moved {} to {}",
+                            name.display(),
+                            target.display()
+                        );
                     }
                 }
             }
