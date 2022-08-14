@@ -27,3 +27,6 @@ watchman_client = "0.8.0"
 
 [dev-dependencies]
 assay = "0.1.1"
+
+[features]
+journald = ["tracing-journald"]
