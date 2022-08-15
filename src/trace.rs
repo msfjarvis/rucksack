@@ -12,10 +12,10 @@ fn configure_tracing() -> Result<(), SetGlobalDefaultError> {
 
 #[cfg(feature = "journald")]
 fn configure_tracing() -> Result<(), SetGlobalDefaultError> {
-    use tracing_journald::Layer;
+    use tracing_journald::layer;
     use tracing_subscriber::{layer::SubscriberExt, registry};
 
-    let subscriber = registry().with(Layer::new().unwrap().with_field_prefix(None));
+    let subscriber = registry().with(layer().unwrap());
     set_global_default(subscriber)
 }
 
