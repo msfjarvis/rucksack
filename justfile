@@ -15,8 +15,20 @@ build type="":
 check type="":
     cargo check {{ type }}
 
+log:
+    journalctl --user -xeu file-collector.service
+
 run type="":
     cargo run {{ type }}
+
+start:
+    systemctl --user start file-collector.service
+
+status:
+    systemctl --user status file-collector.service
+
+stop:
+    systemctl --user stop file-collector.service
 
 test:
     cargo nextest run
