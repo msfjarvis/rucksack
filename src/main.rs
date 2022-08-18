@@ -1,5 +1,5 @@
 mod config;
-mod trace;
+mod logging;
 mod watch;
 
 use crate::config::{get_path, Root};
@@ -11,7 +11,7 @@ use watchman_client::{prelude::*, SubscriptionData};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
-    trace::init()?;
+    logging::init()?;
     if let Err(err) = run().await {
         error!(?err);
         std::process::exit(1);
