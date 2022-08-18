@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use serde::Deserialize;
-use tracing::{debug, trace};
+use tracing::trace;
 use watchman_client::{prelude::*, Subscription};
 
 use crate::config::Bucket;
@@ -26,7 +26,7 @@ pub async fn generate_subscriptions<'a>(
         let resolved = client
             .resolve_root(CanonicalPath::canonicalize(path).context(format!("{}", path.display()))?)
             .await?;
-        debug!(
+        trace!(
             "Adding subscription for {}",
             resolved.path().as_path().display()
         );
