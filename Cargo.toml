@@ -13,16 +13,16 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 publish = false
 
 [dependencies]
-anyhow = "1.0.61"
+anyhow = "1.0.65"
 dirs = "4.0.0"
-futures = "0.3.21"
-serde = "1.0.143"
-serde_derive = "1.0.143"
-tokio = { version = "1.20.1", features = ["tokio-macros"] }
+futures = "0.3.24"
+serde = "1.0.145"
+serde_derive = "1.0.145"
+tokio = { version = "1.21.2", features = ["tokio-macros"] }
 toml = "0.5.9"
-tracing = "0.1.36"
+tracing = "0.1.37"
 tracing-journald = { version = "0.3.0", optional = true }
-tracing-subscriber = "0.3.15"
+tracing-subscriber = "0.3.16"
 watchman_client = "0.8.0"
 
 [dev-dependencies]
