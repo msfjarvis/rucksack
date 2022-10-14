@@ -33,8 +33,7 @@ async fn run() -> Result<()> {
             .map(|sub| Box::pin(sub.next()))
             .collect::<Vec<_>>();
         let (resolved, index, _) = select_all(subscription_futures).await;
-        let resolved = resolved?;
-        if let SubscriptionData::FilesChanged(event) = resolved {
+        if let Ok(SubscriptionData::FilesChanged(event)) = resolved {
             if let Some(files) = event.files {
                 for file in &files {
                     let name = file.name.as_path();
