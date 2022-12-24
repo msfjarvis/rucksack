@@ -14,9 +14,10 @@ async fn main() -> Result<()> {
     logging::init()?;
     if let Err(err) = run().await {
         error!(?err);
-        std::process::exit(1);
+        Err(err)
+    } else {
+        Ok(())
     }
-    Ok(())
 }
 
 async fn run() -> Result<()> {
