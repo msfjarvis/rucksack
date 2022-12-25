@@ -6,18 +6,13 @@ use crate::config::{get_path, Root};
 use crate::watch::generate_subscriptions;
 use anyhow::{Context, Result};
 use futures::future::select_all;
-use tracing::{debug, error, trace};
+use tracing::{debug, trace};
 use watchman_client::{prelude::*, SubscriptionData};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     logging::init()?;
-    if let Err(err) = run().await {
-        error!(?err);
-        Err(err)
-    } else {
-        Ok(())
-    }
+    run().await
 }
 
 async fn run() -> Result<()> {
