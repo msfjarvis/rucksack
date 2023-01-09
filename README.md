@@ -1,4 +1,4 @@
-# file-collector [![Check Rust code](https://github.com/msfjarvis/file-collector/actions/workflows/test.yml/badge.svg)](https://github.com/msfjarvis/file-collector/actions/workflows/test.yml)
+# file-collector [![Check Rust code](https://github.com/msfjarvis/file-collector/actions/workflows/test.yml/badge.svg)](https://github.com/msfjarvis/file-collector/actions/workflows/test.yml) [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 I often run into an annoying problem where every game I play stores in-game screenshots into a different hard-to-access directory and it becomes a pain to hunt them down when I want to share one of them.
 
