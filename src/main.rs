@@ -4,7 +4,7 @@ mod watch;
 
 use crate::config::{get_path, Root};
 use crate::watch::generate_subscriptions;
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, bail};
 use futures::future::select_all;
 use tracing::{debug, trace};
 use watchman_client::{prelude::*, SubscriptionData};
@@ -22,6 +22,9 @@ async fn run() -> Result<()> {
 
     let client = Connector::new().connect().await?;
     let mut subs = generate_subscriptions(&client, &config.bucket).await?;
+    if subs.is_empty() {
+        bail!("Failed to generate any watchman subscriptions, make sure the specified sources exist.")
+    }
 
     loop {
         let subscription_futures = subs
