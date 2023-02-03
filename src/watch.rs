@@ -1,6 +1,7 @@
-use anyhow::{Context, Result};
+use anyhow::{bail, Result};
 use serde::Deserialize;
-use tracing::trace;
+use std::io::ErrorKind;
+use tracing::{error, trace};
 use watchman_client::{prelude::*, Subscription};
 
 use crate::config::Bucket;
@@ -23,9 +24,17 @@ pub async fn generate_subscriptions<'a>(
     }
     let mut subs = vec![];
     for path in &bucket.sources {
-        let resolved = client
-            .resolve_root(CanonicalPath::canonicalize(path).context(format!("{}", path.display()))?)
-            .await?;
+        let canonical_path = match CanonicalPath::canonicalize(path) {
+            Ok(path) => path,
+            Err(err) => {
+                if err.kind() == ErrorKind::NotFound {
+                    error!("Directory {} not found, ignoring...", path.display());
+                    continue;
+                }
+                bail!(err)
+            }
+        };
+        let resolved = client.resolve_root(canonical_path).await?;
         trace!(
             "Adding subscription for {}",
             resolved.path().as_path().display()
