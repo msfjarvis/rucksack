@@ -49,38 +49,40 @@
 
       rustStable = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
       craneLib = (crane.mkLib pkgs).overrideToolchain rustStable;
-      src = craneLib.cleanCargoSource ./.;
-      cargoArtifacts = craneLib.buildDepsOnly {inherit src buildInputs;};
-      buildInputs = [];
 
-      file-collector = craneLib.buildPackage {
-        inherit src;
-        doCheck = false;
-      };
-
-      file-collector-clippy = craneLib.cargoClippy {
-        inherit cargoArtifacts src buildInputs;
+      commonArgs = {
+        src = craneLib.cleanCargoSource ./.;
+        buildInputs = [];
+        nativeBuildInputs = [];
         cargoClippyExtraArgs = "--all-targets -- --deny warnings";
       };
 
-      file-collector-fmt = craneLib.cargoFmt {inherit src;};
+      cargoArtifacts = craneLib.buildDepsOnly (commonArgs // {doCheck = false;});
 
-      file-collector-audit = craneLib.cargoAudit {inherit src advisory-db;};
+      file-collector = craneLib.buildPackage (commonArgs
+        // {
+          inherit cargoArtifacts;
+          doCheck = false;
+        });
 
-      file-collector-nextest = craneLib.cargoNextest {
-        inherit cargoArtifacts src buildInputs;
-        partitions = 1;
-        partitionType = "count";
-      };
+      file-collector-clippy = craneLib.cargoClippy (commonArgs
+        // {
+          inherit cargoArtifacts;
+        });
+
+      file-collector-fmt = craneLib.cargoFmt (commonArgs // {});
+
+      file-collector-audit = craneLib.cargoAudit (commonArgs // {inherit advisory-db;});
+
+      file-collector-nextest = craneLib.cargoNextest (commonArgs
+        // {
+          inherit cargoArtifacts;
+          partitions = 1;
+          partitionType = "count";
+        });
     in {
       checks = {
-        inherit
-          file-collector
-          file-collector-audit
-          file-collector-clippy
-          file-collector-fmt
-          file-collector-nextest
-          ;
+        inherit file-collector file-collector-audit file-collector-clippy file-collector-fmt file-collector-nextest;
       };
 
       packages.default = file-collector;
