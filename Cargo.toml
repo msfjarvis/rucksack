@@ -12,7 +12,7 @@ readme = "README.md"
 include = ["src/**/*", "LICENSE-*", "README.md"]
 
 [dependencies]
-anyhow = "1.0.65"
+anyhow = "1.0.71"
 dirs = "4.0.0"
 futures = "0.3.28"
 serde = "1.0.145"
