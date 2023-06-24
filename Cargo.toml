@@ -13,7 +13,7 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 
 [dependencies]
 anyhow = "1.0.71"
-dirs = "4.0.0"
+dirs = "5.0.1"
 futures = "0.3.28"
 serde = "1.0.164"
 serde_derive = "1.0.164"
