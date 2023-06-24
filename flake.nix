@@ -96,6 +96,7 @@
 
         nativeBuildInputs = with pkgs; [
           cargo-audit
+          cargo-nextest
           cargo-release
           rustStable
           watchman
