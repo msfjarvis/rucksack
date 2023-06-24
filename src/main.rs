@@ -18,7 +18,7 @@ async fn main() -> Result<()> {
 async fn run() -> Result<()> {
     let config_path = get_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
-    let config: Root<'_> = toml::from_str(&config_str)?;
+    let config: Root<'_> = basic_toml::from_str(&config_str)?;
 
     let client = Connector::new().connect().await?;
     let mut subs = generate_subscriptions(&client, &config.bucket).await?;

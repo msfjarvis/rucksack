@@ -30,7 +30,7 @@ mod test {
     use std::path::PathBuf;
 
     use assay::assay;
-    use toml::from_str;
+    use basic_toml::from_str;
 
     use super::Root;
 
