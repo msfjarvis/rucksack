@@ -15,8 +15,8 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 anyhow = "1.0.71"
 dirs = "4.0.0"
 futures = "0.3.28"
-serde = "1.0.145"
-serde_derive = "1.0.145"
+serde = "1.0.164"
+serde_derive = "1.0.164"
 tokio = { version = "1.21.2", features = ["tokio-macros"] }
 toml = "0.5.9"
 tracing = "0.1.37"
