@@ -48,14 +48,12 @@
       };
 
       craneLib = (crane.mkLib pkgs).overrideToolchain rustStable;
-
       commonArgs = {
         src = craneLib.cleanCargoSource ./.;
         buildInputs = [];
         nativeBuildInputs = [];
         cargoClippyExtraArgs = "--all-targets -- --deny warnings";
       };
-
       cargoArtifacts = craneLib.buildDepsOnly (commonArgs // {doCheck = false;});
 
       file-collector = craneLib.buildPackage (commonArgs
@@ -63,16 +61,12 @@
           inherit cargoArtifacts;
           doCheck = false;
         });
-
       file-collector-clippy = craneLib.cargoClippy (commonArgs
         // {
           inherit cargoArtifacts;
         });
-
       file-collector-fmt = craneLib.cargoFmt (commonArgs // {});
-
       file-collector-audit = craneLib.cargoAudit (commonArgs // {inherit advisory-db;});
-
       file-collector-nextest = craneLib.cargoNextest (commonArgs
         // {
           inherit cargoArtifacts;
