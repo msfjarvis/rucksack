@@ -17,8 +17,8 @@ anyhow = "1.0.72"
 basic-toml = "0.1.4"
 dirs = "5.0.1"
 futures = "0.3.28"
-serde = "1.0.175"
-serde_derive = "1.0.175"
+serde = "1.0.178"
+serde_derive = "1.0.178"
 tokio = { version = "1.29.1", features = ["tokio-macros"] }
 tracing = "0.1.37"
 tracing-journald = { version = "0.3.0", optional = true }
