@@ -19,7 +19,7 @@ dirs = "5.0.1"
 futures = "0.3.28"
 serde = "1.0.183"
 serde_derive = "1.0.183"
-tokio = { version = "1.30.0", features = ["tokio-macros"] }
+tokio = { version = "1.31.0", features = ["tokio-macros"] }
 tracing = "0.1.37"
 tracing-journald = { version = "0.3.0", optional = true }
 tracing-subscriber = "0.3.17"
