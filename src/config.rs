@@ -72,5 +72,7 @@ mod test {
         );
         assert_eq!(PathBuf::from("/home/test/screenshots"), bucket.target);
         assert_eq!(Some("*.mp4"), config.bucket.file_filter);
+        assert!(config.is_match("1.mp4"));
+        assert!(!config.is_match("1.png"));
     }
 }
