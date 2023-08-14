@@ -38,7 +38,7 @@ async fn run() -> Result<()> {
                     if exists && !empty {
                         let source = config.bucket.sources[index].join(name);
                         let source = source.as_path();
-                        let target = config.bucket.target.join(name);
+                        let target = config.bucket.target.join(source.file_name().unwrap());
                         let target = target.as_path();
                         debug!("Moving {} to {}", source.display(), target.display());
                         std::fs::copy(source, target).context(format!(
