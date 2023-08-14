@@ -35,7 +35,7 @@ async fn run() -> Result<()> {
                     let name = file.name.as_path();
                     let exists = *file.exists;
                     let empty = *file.size == 0;
-                    if exists && !empty {
+                    if exists && !empty && config.is_match(name.to_str().unwrap()) {
                         let source = config.bucket.sources[index].join(name);
                         let source = source.as_path();
                         let target = config.bucket.target.join(source.file_name().unwrap());

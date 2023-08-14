@@ -17,6 +17,7 @@ anyhow = "1.0.72"
 basic-toml = "0.1.4"
 dirs = "5.0.1"
 futures = "0.3.28"
+globset = "0.4.13"
 serde = "1.0.183"
 serde_derive = "1.0.183"
 tokio = { version = "1.31.0", features = ["tokio-macros"] }

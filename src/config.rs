@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Result};
+use globset::Glob;
 use serde_derive::Deserialize;
 use std::path::PathBuf;
 use tracing::trace;
@@ -14,6 +15,18 @@ pub struct Bucket<'bucket> {
     pub name: Option<&'bucket str>,
     pub sources: Vec<PathBuf>,
     pub target: PathBuf,
+    pub file_filter: Option<&'bucket str>,
+}
+
+impl<'a> Root<'a> {
+    pub fn is_match(&self, file_name: &str) -> bool {
+        if let Some(pattern) = self.bucket.file_filter {
+            if let Ok(glob) = Glob::new(pattern) {
+                return glob.compile_matcher().is_match(file_name);
+            }
+        };
+        true
+    }
 }
 
 pub fn get_path() -> Result<PathBuf> {
@@ -48,6 +61,7 @@ mod test {
             "/mnt/data/Game 1/screenshots"
         ]
         target = "/home/test/screenshots"
+        file_filter = "*.mp4"
         "#;
         let config: Root<'_> = from_str(config)?;
         let bucket = &config.bucket;
@@ -57,5 +71,6 @@ mod test {
             bucket.sources
         );
         assert_eq!(PathBuf::from("/home/test/screenshots"), bucket.target);
+        assert_eq!(Some("*.mp4"), config.bucket.file_filter);
     }
 }
