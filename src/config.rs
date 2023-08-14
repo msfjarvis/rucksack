@@ -17,10 +17,15 @@ pub struct Bucket<'bucket> {
 }
 
 pub fn get_path() -> Result<PathBuf> {
-    let mut config_path = dirs::config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
-    config_path.push("collector");
-    config_path.push("config");
-    config_path.set_extension("toml");
+    let config_path = if let Ok(path) = std::env::var("FILE_COLLECTOR_CONFIG") {
+        PathBuf::from(path)
+    } else {
+        let mut path = dirs::config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
+        path.push("collector");
+        path.push("config");
+        path.set_extension("toml");
+        path
+    };
     trace!("Config file: {}", config_path.to_string_lossy());
     Ok(config_path)
 }
