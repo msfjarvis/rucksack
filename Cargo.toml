@@ -1,6 +1,6 @@
 [package]
 name = "rucksack"
-version = "0.5.0"
+version = "1.0.0"
 authors = ["Harsh Shandilya <me@msfjarvis.dev>"]
 edition = "2021"
 description = "CLI tool to collect files from multiple directories into a single target"
