@@ -11,8 +11,7 @@ This simple tool aims to resolve that using the concept of a bucket, where you d
 An example config file can look something like this:
 
 ```toml
-# ~/.config/collector/config.toml
-[bucket]
+# ~/.config/rucksack.toml
 name = "Screenshots"
 sources = [
   "/mnt/mediahell/MultiMC/instances/Fabulously-Optimized-4.1.0-beta.2/minecraft/screenshots",
