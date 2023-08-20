@@ -6,7 +6,7 @@ use tracing::trace;
 
 #[derive(Debug, Deserialize)]
 pub struct Root<'bucket> {
-    #[serde(borrow)]
+    #[serde(borrow, flatten)]
     pub bucket: Bucket<'bucket>,
 }
 
@@ -35,7 +35,6 @@ pub fn get_path() -> Result<PathBuf> {
     } else {
         let mut path = dirs::config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
         path.push("rucksack");
-        path.push("config");
         path.set_extension("toml");
         path
     };
@@ -55,7 +54,6 @@ mod test {
     #[assay]
     fn parse() {
         let config = r#"
-        [bucket]
         name = "Screenshots"
         sources = [
             "/mnt/data/Game 1/screenshots"
