@@ -30,11 +30,11 @@ impl<'a> Root<'a> {
 }
 
 pub fn get_path() -> Result<PathBuf> {
-    let config_path = if let Ok(path) = std::env::var("FILE_COLLECTOR_CONFIG") {
+    let config_path = if let Ok(path) = std::env::var("RUCKSACK_CONFIG") {
         PathBuf::from(path)
     } else {
         let mut path = dirs::config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
-        path.push("collector");
+        path.push("rucksack");
         path.push("config");
         path.set_extension("toml");
         path

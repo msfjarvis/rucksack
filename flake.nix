@@ -1,5 +1,5 @@
 {
-  description = "file-collector";
+  description = "rucksack";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -56,18 +56,18 @@
       };
       cargoArtifacts = craneLib.buildDepsOnly (commonArgs // {doCheck = false;});
 
-      file-collector = craneLib.buildPackage (commonArgs
+      rucksack = craneLib.buildPackage (commonArgs
         // {
           inherit cargoArtifacts;
           doCheck = false;
         });
-      file-collector-clippy = craneLib.cargoClippy (commonArgs
+      rucksack-clippy = craneLib.cargoClippy (commonArgs
         // {
           inherit cargoArtifacts;
         });
-      file-collector-fmt = craneLib.cargoFmt (commonArgs // {});
-      file-collector-audit = craneLib.cargoAudit (commonArgs // {inherit advisory-db;});
-      file-collector-nextest = craneLib.cargoNextest (commonArgs
+      rucksack-fmt = craneLib.cargoFmt (commonArgs // {});
+      rucksack-audit = craneLib.cargoAudit (commonArgs // {inherit advisory-db;});
+      rucksack-nextest = craneLib.cargoNextest (commonArgs
         // {
           inherit cargoArtifacts;
           partitions = 1;
@@ -75,12 +75,12 @@
         });
     in {
       checks = {
-        inherit file-collector file-collector-audit file-collector-clippy file-collector-fmt file-collector-nextest;
+        inherit rucksack rucksack-audit rucksack-clippy rucksack-fmt rucksack-nextest;
       };
 
-      packages.default = file-collector;
+      packages.default = rucksack;
 
-      apps.default = flake-utils.lib.mkApp {drv = file-collector;};
+      apps.default = flake-utils.lib.mkApp {drv = rucksack;};
 
       devShells.default = pkgs.devshell.mkShell {
         bash = {interactive = "";};

@@ -1,11 +1,11 @@
 [package]
-name = "file-collector"
+name = "rucksack"
 version = "0.5.0"
 authors = ["Harsh Shandilya <me@msfjarvis.dev>"]
 edition = "2021"
 description = "CLI tool to collect files from multiple directories into a single target"
-repository = "https://github.com/msfjarvis/file-collector"
-homepage = "https://github.com/msfjarvis/file-collector"
+repository = "https://github.com/msfjarvis/rucksack"
+homepage = "https://github.com/msfjarvis/rucksack"
 license = "MIT/Apache-2.0"
 keywords = []
 readme = "README.md"

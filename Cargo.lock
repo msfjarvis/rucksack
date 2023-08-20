@@ -202,25 +202,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6999dc1837253364c2ebb0704ba97994bd874e8f195d665c50b7548f6ea92764"
 
 [[package]]
-name = "file-collector"
-version = "0.5.0"
-dependencies = [
- "anyhow",
- "assay",
- "basic-toml",
- "dirs",
- "futures 0.3.28",
- "globset",
- "serde",
- "serde_derive",
- "tokio",
- "tracing",
- "tracing-journald",
- "tracing-subscriber",
- "watchman_client",
-]
-
-[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -606,6 +587,25 @@ name = "regex-syntax"
 version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e5ea92a5b6195c6ef2a0295ea818b312502c6fc94dde986c5553242e18fd4ce2"
+
+[[package]]
+name = "rucksack"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "assay",
+ "basic-toml",
+ "dirs",
+ "futures 0.3.28",
+ "globset",
+ "serde",
+ "serde_derive",
+ "tokio",
+ "tracing",
+ "tracing-journald",
+ "tracing-subscriber",
+ "watchman_client",
+]
 
 [[package]]
 name = "rustc-demangle"
