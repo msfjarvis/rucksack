@@ -13,6 +13,11 @@
   inputs.crane.inputs.flake-utils.follows = "flake-utils";
   inputs.crane.inputs.nixpkgs.follows = "nixpkgs";
 
+  inputs.custom-nixpkgs.url = "github:msfjarvis/custom-nixpkgs";
+  inputs.custom-nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.custom-nixpkgs.inputs.fenix.follows = "fenix";
+  inputs.custom-nixpkgs.inputs.systems.follows = "systems";
+
   inputs.devshell.url = "github:numtide/devshell";
   inputs.devshell.inputs.nixpkgs.follows = "nixpkgs";
   inputs.devshell.inputs.systems.follows = "systems";
@@ -31,6 +36,7 @@
     nixpkgs,
     advisory-db,
     crane,
+    custom-nixpkgs,
     devshell,
     fenix,
     flake-utils,
@@ -39,7 +45,7 @@
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [devshell.overlays.default];
+        overlays = [custom-nixpkgs.overlays.default devshell.overlays.default];
       };
 
       rustStable = (import fenix {inherit pkgs;}).fromToolchainFile {
@@ -94,6 +100,7 @@
 
         packages = with pkgs; [
           cargo-audit
+          cargo-dist-unstable
           cargo-nextest
           cargo-release
           rustStable
