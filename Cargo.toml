@@ -18,8 +18,8 @@ basic-toml = "0.1.4"
 dirs = "5.0.1"
 futures = "0.3.28"
 globset = "0.4.13"
-serde = "1.0.188"
-serde_derive = "1.0.188"
+serde = "1.0.189"
+serde_derive = "1.0.189"
 tokio = { version = "1.33.0", features = ["tokio-macros"] }
 tracing = "0.1.37"
 tracing-journald = { version = "0.3.0", optional = true }
