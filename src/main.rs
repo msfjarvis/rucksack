@@ -4,8 +4,9 @@ mod watch;
 
 use crate::config::{get_path, Root};
 use crate::watch::generate_subscriptions;
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use futures::future::select_all;
+use std::fs::File;
 use tracing::{debug, trace};
 use watchman_client::{prelude::*, SubscriptionData};
 
@@ -40,12 +41,23 @@ async fn run() -> Result<()> {
                         let source = source.as_path();
                         let target = config.bucket.target.join(source.file_name().unwrap());
                         let target = target.as_path();
+
+                        let src_file = File::open(source)?;
+                        let src_len = src_file.metadata()?.len();
+
                         debug!("Moving {} to {}", source.display(), target.display());
                         std::fs::copy(source, target).context(format!(
                             "src={}, dest={}",
                             source.display(),
                             target.display()
                         ))?;
+                        let dst_file = File::open(target)?;
+                        let dst_len = dst_file.metadata()?.len();
+
+                        if src_len != dst_len {
+                            return Err(anyhow!("Destination file length does not match! Source file was {src_len} bytes but {dst_len} bytes were written"));
+                        }
+
                         std::fs::remove_file(source).context(format!("{}", source.display()))?;
                         debug!(
                             "Successfully moved {} to {}",
