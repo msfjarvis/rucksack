@@ -132,7 +132,7 @@ jobs:
   # Build and package all the platform-agnostic(ish) things
   upload-global-artifacts:
     needs: [plan, upload-local-artifacts]
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -176,7 +176,7 @@ jobs:
 
   publish-homebrew-formula:
     needs: [plan, should-publish]
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PLAN: ${{ needs.plan.outputs.val }}
