@@ -36,33 +36,6 @@
         "type": "github"
       }
     },
-    "custom-nixpkgs": {
-      "inputs": {
-        "fenix": [
-          "fenix"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-manifest": "rust-manifest",
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1699150427,
-        "narHash": "sha256-evGCD+uGmYsdW7F2aX6YFGKTMeTJ0I/JEDTFQABkij4=",
-        "owner": "msfjarvis",
-        "repo": "custom-nixpkgs",
-        "rev": "42e4eee4152841b5d097aa700d081906228ea7cd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "msfjarvis",
-        "repo": "custom-nixpkgs",
-        "type": "github"
-      }
-    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -163,7 +136,6 @@
       "inputs": {
         "advisory-db": "advisory-db",
         "crane": "crane",
-        "custom-nixpkgs": "custom-nixpkgs",
         "devshell": "devshell",
         "fenix": "fenix",
         "flake-compat": "flake-compat",
@@ -187,18 +159,6 @@
         "ref": "nightly",
         "repo": "rust-analyzer",
         "type": "github"
-      }
-    },
-    "rust-manifest": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-TW028FNhXnRKwRWA1FJMwpgUDgr3usU8XXzaCPVnfXQ=",
-        "type": "file",
-        "url": "https://static.rust-lang.org/dist/2023-10-22/channel-rust-nightly.toml"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://static.rust-lang.org/dist/2023-10-22/channel-rust-nightly.toml"
       }
     },
     "systems": {
