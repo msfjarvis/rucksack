@@ -21,6 +21,10 @@ async fn run() -> Result<()> {
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Root<'_> = basic_toml::from_str(&config_str)?;
 
+    if !config.bucket.target.exists() {
+        return Err(anyhow!("{} does not exist", config.bucket.target.display()));
+    }
+
     let client = Connector::new().connect().await?;
     let mut subs = generate_subscriptions(&client, &config.bucket).await?;
 
