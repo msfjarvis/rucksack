@@ -77,7 +77,8 @@ async fn run() -> Result<()> {
                             return Err(anyhow!("Destination file length does not match! Source file was {src_len} bytes but {dst_len} bytes were written"));
                         }
 
-                        std::fs::remove_file(source).context(format!("failed to remove {}", source.display()))?;
+                        std::fs::remove_file(source)
+                            .context(format!("failed to remove {}", source.display()))?;
                         debug!(
                             "Successfully moved {} to {}",
                             name.display(),
