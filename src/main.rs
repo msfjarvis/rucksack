@@ -46,8 +46,10 @@ async fn run() -> Result<()> {
                         let target = config.bucket.target.join(source.file_name().unwrap());
                         let target = target.as_path();
 
-                        let mut src_file = File::open(source)?;
-                        let mut dst_file = File::create(target)?;
+                        let mut src_file = File::open(source)
+                            .context(format!("failed to open {}", source.display()))?;
+                        let mut dst_file = File::create(target)
+                            .context(format!("failed to open {}", target.display()))?;
 
                         debug!("Moving {} to {}", source.display(), target.display());
                         std::io::copy(&mut src_file, &mut dst_file).context(format!(
@@ -55,17 +57,27 @@ async fn run() -> Result<()> {
                             source.display(),
                             target.display(),
                         ))?;
-                        src_file.sync_all()?;
-                        dst_file.sync_all()?;
+                        src_file
+                            .sync_all()
+                            .context(format!("failed to fsync {}", source.display()))?;
+                        dst_file
+                            .sync_all()
+                            .context(format!("failed to fsync {}", target.display()))?;
 
-                        let src_len = src_file.metadata()?.len();
-                        let dst_len = dst_file.metadata()?.len();
+                        let src_len = src_file
+                            .metadata()
+                            .context(format!("{} does not exist", source.display()))?
+                            .len();
+                        let dst_len = dst_file
+                            .metadata()
+                            .context(format!("{} does not exist", target.display()))?
+                            .len();
 
                         if src_len != dst_len {
                             return Err(anyhow!("Destination file length does not match! Source file was {src_len} bytes but {dst_len} bytes were written"));
                         }
 
-                        std::fs::remove_file(source).context(format!("{}", source.display()))?;
+                        std::fs::remove_file(source).context(format!("failed to remove {}", source.display()))?;
                         debug!(
                             "Successfully moved {} to {}",
                             name.display(),
