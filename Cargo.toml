@@ -13,7 +13,7 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 publish = false
 
 [dependencies]
-anyhow = "1.0.75"
+anyhow = "1.0.76"
 basic-toml = "0.1.7"
 dirs = "5.0.1"
 futures = "0.3.29"
