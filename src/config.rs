@@ -21,8 +21,10 @@ pub struct Bucket<'bucket> {
 impl<'a> Root<'a> {
     pub fn is_match(&self, file_name: &str) -> bool {
         if let Some(pattern) = self.bucket.file_filter {
-            if let Ok(glob) = Glob::new(pattern) {
-                return glob.compile_matcher().is_match(file_name);
+            if !pattern.is_empty() {
+                if let Ok(glob) = Glob::new(pattern) {
+                    return glob.compile_matcher().is_match(file_name);
+                }
             }
         };
         true
