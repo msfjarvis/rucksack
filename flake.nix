@@ -95,6 +95,7 @@
           cargo-dist
           cargo-nextest
           cargo-release
+          gcc
           rustStable
           watchman
         ];
