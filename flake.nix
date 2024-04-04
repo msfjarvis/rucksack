@@ -166,13 +166,13 @@
                 Environment = "PATH=${pkgs.coreutils}/bin:${pkgs.watchman}/bin";
               };
               script = ''
-                exec env RUCKSACK_CONFIG=${settingsFile} ${pkgs.rucksack}/bin/rucksack
+                exec env RUCKSACK_CONFIG=${settingsFile} ${lib.getExe cfg.package}
               '';
             };
 
             users.users = mkIf (cfg.user == "rucksack") {
               rucksack = {
-                group = cfg.group;
+                inherit (cfg) group;
                 home = cfg.dataDir;
                 createHome = false;
                 description = "rucksack daemon user";
