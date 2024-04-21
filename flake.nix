@@ -73,9 +73,7 @@
         });
     in {
       checks = {
-        inherit rucksack rucksack-clippy rucksack-fmt rucksack-nextest;
-        # TODO: Re-enable once https://github.com/NixOS/nixpkgs/issues/288064 is fixed
-        # inherit rucksack-audit;
+        inherit rucksack rucksack-audit rucksack-clippy rucksack-fmt rucksack-nextest;
       };
 
       packages.default = rucksack;
