@@ -12,6 +12,12 @@ readme = "README.md"
 include = ["src/**/*", "LICENSE-*", "README.md"]
 publish = false
 
+[package.metadata.wix]
+upgrade-guid = "A364F7A1-8DC0-4A2E-B8A8-0ADED782E031"
+path-guid = "0DF91528-E2D7-472D-8BD4-5A63AD38DD26"
+license = false
+eula = false
+
 [dependencies]
 anyhow = "1.0.82"
 basic-toml = "0.1.9"
@@ -40,11 +46,11 @@ lto = "thin"
 # Config for 'cargo dist'
 [workspace.metadata.dist]
 # The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
-cargo-dist-version = "0.8.2"
+cargo-dist-version = "0.13.1"
 # CI backends to support
 ci = ["github"]
 # The installers to generate for each app
-installers = ["shell", "homebrew"]
+installers = ["shell", "homebrew", "msi"]
 # A GitHub repo to push Homebrew formulas to
 tap = "msfjarvis/homebrew-tap"
 # Target platforms to build apps for (Rust target-triple syntax)
@@ -55,3 +61,5 @@ publish-jobs = ["homebrew"]
 dist = true
 # Publish jobs to run in CI
 pr-run-mode = "upload"
+# Whether to install an updater program
+install-updater = true
