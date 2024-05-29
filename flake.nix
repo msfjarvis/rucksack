@@ -94,6 +94,7 @@
           cargo-dist
           cargo-nextest
           cargo-release
+          fenix.packages.${system}.rust-analyzer
           gcc
           rustStable
           watchman
