@@ -5,6 +5,7 @@ mod watch;
 use crate::config::{get_path, Root};
 use crate::watch::generate_subscriptions;
 use anyhow::{anyhow, Context, Result};
+use config::PathType;
 use futures::future::select_all;
 use std::fs::File;
 use tracing::{debug, trace};
@@ -41,7 +42,18 @@ async fn run() -> Result<()> {
                     let exists = *file.exists;
                     let empty = *file.size == 0;
                     if exists && !empty && config.is_match(name.to_str().unwrap()) {
-                        let source = config.bucket.sources[index].join(name);
+                        let (raw_source, recursive) = match config.bucket.sources[index].clone() {
+                            PathType::Plain(path_buf) => (path_buf, true),
+                            PathType::Configurable(configurable_path) => {
+                                (configurable_path.path, configurable_path.recursive)
+                            }
+                        };
+                        let source = raw_source.join(name);
+                        if source.is_dir()
+                            || (source.parent() != Some(raw_source.as_path()) && !recursive)
+                        {
+                            break;
+                        };
                         let source = source.as_path();
                         let target = config.bucket.target.join(source.file_name().unwrap());
                         let target = target.as_path();

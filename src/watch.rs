@@ -3,7 +3,7 @@ use serde::Deserialize;
 use tracing::trace;
 use watchman_client::{prelude::*, Subscription};
 
-use crate::config::Bucket;
+use crate::config::{Bucket, PathType};
 
 query_result_type! {
     pub struct NameAndType {
@@ -22,7 +22,15 @@ pub async fn generate_subscriptions<'a>(
         trace!("Generating Watchman subscriptions for {}", name);
     }
     let mut subs = vec![];
-    for path in &bucket.sources {
+    let sources = bucket
+        .sources
+        .iter()
+        .map(|source| match source {
+            PathType::Plain(path_buf) => path_buf,
+            PathType::Configurable(configurable_path) => &configurable_path.path,
+        })
+        .collect::<Vec<_>>();
+    for path in sources {
         let resolved = client
             .resolve_root(CanonicalPath::canonicalize(path).context(format!("{}", path.display()))?)
             .await?;

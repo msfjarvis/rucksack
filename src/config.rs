@@ -10,10 +10,23 @@ pub struct Root<'bucket> {
     pub bucket: Bucket<'bucket>,
 }
 
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct ConfigurablePath {
+    pub path: PathBuf,
+    pub recursive: bool,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+#[serde(untagged)]
+pub enum PathType {
+    Plain(PathBuf),
+    Configurable(ConfigurablePath),
+}
+
 #[derive(Debug, Deserialize)]
 pub struct Bucket<'bucket> {
     pub name: Option<&'bucket str>,
-    pub sources: Vec<PathBuf>,
+    pub sources: Vec<PathType>,
     pub target: PathBuf,
     pub file_filter: Option<&'bucket str>,
 }
@@ -46,19 +59,18 @@ pub fn get_path() -> Result<PathBuf> {
 
 #[cfg(test)]
 mod test {
-    use std::path::PathBuf;
-
+    use super::{ConfigurablePath, PathType, Root};
     use assay::assay;
     use basic_toml::from_str;
-
-    use super::Root;
+    use std::path::PathBuf;
 
     #[assay]
     fn parse() {
         let config = r#"
         name = "Screenshots"
         sources = [
-            "/mnt/data/Game 1/screenshots"
+            "/mnt/data/Game 1/screenshots",
+            { path = "/mnt/data/Game 2/screenshots", recursive = true }
         ]
         target = "/home/test/screenshots"
         file_filter = "*.mp4"
@@ -67,7 +79,13 @@ mod test {
         let bucket = &config.bucket;
         assert_eq!(Some("Screenshots"), bucket.name);
         assert_eq!(
-            vec![PathBuf::from("/mnt/data/Game 1/screenshots")],
+            vec![
+                PathType::Plain(PathBuf::from("/mnt/data/Game 1/screenshots")),
+                PathType::Configurable(ConfigurablePath {
+                    path: PathBuf::from("/mnt/data/Game 2/screenshots"),
+                    recursive: true,
+                }),
+            ],
             bucket.sources
         );
         assert_eq!(PathBuf::from("/home/test/screenshots"), bucket.target);
