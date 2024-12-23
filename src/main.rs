@@ -53,7 +53,7 @@ async fn run() -> Result<()> {
                         if source.is_dir()
                             || (source.parent() != Some(raw_source.as_path()) && !recursive)
                         {
-                            break;
+                            continue;
                         };
                         let source = source.as_path();
                         let target = config.bucket.target.join(source.file_name().unwrap());
