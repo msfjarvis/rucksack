@@ -7,6 +7,7 @@ use crate::watch::generate_subscriptions;
 use anyhow::{anyhow, Context, Result};
 use futures::future::select_all;
 use std::fs::File;
+use std::path::Path;
 use tracing::{debug, trace};
 use watchman_client::{prelude::*, SubscriptionData};
 
@@ -14,6 +15,13 @@ use watchman_client::{prelude::*, SubscriptionData};
 async fn main() -> Result<()> {
     logging::init()?;
     run().await
+}
+
+fn relative_depth(parent: &Path, child: &Path) -> usize {
+    child
+        .strip_prefix(parent)
+        .ok()
+        .map_or(1, |relative_path| relative_path.iter().count())
 }
 
 async fn run() -> Result<()> {
@@ -51,7 +59,7 @@ async fn run() -> Result<()> {
                         // We skip directories, and non-immediate children of the source
                         // if the source requests lookups to not be recursive.
                         if source.is_dir()
-                            || (source.parent() != Some(raw_source.as_path()) && !recursive)
+                            || (relative_depth(&raw_source, &source) > 1 && !recursive)
                         {
                             continue;
                         };
