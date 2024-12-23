@@ -1,0 +1,5 @@
+env.RUCKSACK_CONFIG = "config.toml"
+
+[jobs.clippy-all]
+command = ["cargo", "clippy", "--all-targets", "--", "-Wclippy::pedantic"]
+need_stdout = false
