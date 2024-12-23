@@ -2,10 +2,9 @@ mod config;
 mod logging;
 mod watch;
 
-use crate::config::{get_path, Root};
+use crate::config::{get_path, PathType, Root};
 use crate::watch::generate_subscriptions;
 use anyhow::{anyhow, Context, Result};
-use config::PathType;
 use futures::future::select_all;
 use std::fs::File;
 use tracing::{debug, trace};
