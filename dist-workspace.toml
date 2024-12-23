@@ -23,3 +23,8 @@ pr-run-mode = "upload"
 install-updater = true
 # Path that installers should place binaries in
 install-path = "CARGO_HOME"
+# Override the default runner selection since we're on an outdated version of cargo-dist
+# that generates macos-11 references
+[dist.github-custom-runners]
+aarch64-apple-darwin = "macos-14"
+x86_64-apple-darwin = "macos-14"
