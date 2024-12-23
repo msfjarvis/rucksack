@@ -31,7 +31,7 @@ pub struct Bucket<'bucket> {
     pub file_filter: Option<&'bucket str>,
 }
 
-impl<'a> Root<'a> {
+impl Root<'_> {
     pub fn is_match(&self, file_name: &str) -> bool {
         if let Some(pattern) = self.bucket.file_filter {
             if !pattern.is_empty() {
