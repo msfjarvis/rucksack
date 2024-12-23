@@ -48,6 +48,8 @@ async fn run() -> Result<()> {
                             }
                         };
                         let source = raw_source.join(name);
+                        // We skip directories, and non-immediate children of the source
+                        // if the source requests lookups to not be recursive.
                         if source.is_dir()
                             || (source.parent() != Some(raw_source.as_path()) && !recursive)
                         {
