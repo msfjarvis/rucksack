@@ -39,7 +39,7 @@ impl Root<'_> {
                     return glob.compile_matcher().is_match(file_name);
                 }
             }
-        };
+        }
         true
     }
 }

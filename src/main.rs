@@ -62,7 +62,7 @@ async fn run() -> Result<()> {
                             || (relative_depth(&raw_source, &source) > 1 && !recursive)
                         {
                             continue;
-                        };
+                        }
                         let source = source.as_path();
                         let target = config.bucket.target.join(source.file_name().unwrap());
                         let target = target.as_path();
@@ -110,6 +110,6 @@ async fn run() -> Result<()> {
             }
         } else {
             trace!(?resolved);
-        };
+        }
     }
 }
