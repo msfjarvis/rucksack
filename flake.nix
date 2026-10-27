@@ -43,7 +43,7 @@
 
         rustStable = (import fenix { inherit pkgs; }).fromToolchainFile {
           file = ./rust-toolchain.toml;
-          sha256 = "sha256-P30Tm3O7vQAE725YtDCDHGjNrSsfZO4us11UwJGZSJo=";
+          sha256 = "sha256-+xUr6Al1wZSqX8aEsq7DpuFOK4Ve/i+qTl+K5uWQ9GM=";
         };
 
         craneLib = (crane.mkLib pkgs).overrideToolchain rustStable;
@@ -106,17 +106,20 @@
             }
           ];
 
-          packages = with pkgs; [
-            bacon
-            cargo-dist
-            cargo-nextest
-            cargo-release
-            fenix.packages.${system}.rust-analyzer
-            gcc
-            rustStable
-          ] ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [
-            watchman
-          ];
+          packages =
+            with pkgs;
+            [
+              bacon
+              cargo-dist
+              cargo-nextest
+              cargo-release
+              fenix.packages.${system}.rust-analyzer
+              gcc
+              rustStable
+            ]
+            ++ pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [
+              watchman
+            ];
         };
       }
     );
